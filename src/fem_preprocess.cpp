@@ -8,30 +8,30 @@ void PreProcess::make_stiffness_matrix(vector<vector<double>> &G, int NE, vector
         int N1 = NP1[i];
         int N2 = NP2[i];
         int N3 = NP3[i];
-        double X1 = X[N1];
-        double X2 = X[N2];
-        double X3 = X[N3];
-        double Y1 = Y[N1];
-        double Y2 = Y[N2];
-        double Y3 = Y[N3];
-        double delta2 = X1 * (Y2 - Y3) + X2 * (Y3 - Y1) + X3 * (Y1 - Y2);
+        X1[i] = X[N1];
+        X2[i] = X[N2];
+        X3[i] = X[N3];
+        Y1[i] = Y[N1];
+        Y2[i] = Y[N2];
+        Y3[i] = Y[N3];
+        double delta2 = X1[i] * (Y2[i] - Y3[i]) + X2[i] * (Y3[i] - Y1[i]) + X3[i] * (Y1[i] - Y2[i]);
         double delta = delta2 * 0.5;
         delta2 = 1.0 / delta2;
-        double B1 = (Y2 - Y3) * delta2;
-        double B2 = (Y3 - Y1) * delta2;
-        double B3 = (Y1 - Y2) * delta2;
-        double C1 = (X3 - X2) * delta2;
-        double C2 = (X1 - X3) * delta2;
-        double C3 = (X2 - X1) * delta2;
-        G[N1][N1] = (B1 * B1 + C1 * C1) * delta + G[N1][N1];
-        G[N2][N1] = (B2 * B1 + C2 * C1) * delta + G[N2][N1];
-        G[N3][N1] = (B3 * B1 + C3 * C1) * delta + G[N3][N1];
-        G[N1][N2] = (B1 * B2 + C1 * C2) * delta + G[N1][N2];
-        G[N2][N2] = (B2 * B2 + C2 * C2) * delta + G[N2][N2];
-        G[N3][N2] = (B3 * B2 + C3 * C2) * delta + G[N3][N2];
-        G[N1][N3] = (B1 * B3 + C1 * C3) * delta + G[N1][N3];
-        G[N2][N3] = (B2 * B3 + C2 * C3) * delta + G[N2][N3];
-        G[N3][N3] = (B3 * B3 + C3 * C3) * delta + G[N3][N3];
+        B1[i] = (Y2[i] - Y3[i]) * delta2;
+        B2[i] = (Y3[i] - Y1[i]) * delta2;
+        B3[i] = (Y1[i] - Y2[i]) * delta2;
+        C1[i] = (X3[i] - X2[i]) * delta2;
+        C2[i] = (X1[i] - X3[i]) * delta2;
+        C3[i] = (X2[i] - X1[i]) * delta2;
+        G[N1][N1] = (B1[i] * B1[i] + C1[i] * C1[i]) * delta + G[N1][N1];
+        G[N2][N1] = (B2[i] * B1[i] + C2[i] * C1[i]) * delta + G[N2][N1];
+        G[N3][N1] = (B3[i] * B1[i] + C3[i] * C1[i]) * delta + G[N3][N1];
+        G[N1][N2] = (B1[i] * B2[i] + C1[i] * C2[i]) * delta + G[N1][N2];
+        G[N2][N2] = (B2[i] * B2[i] + C2[i] * C2[i]) * delta + G[N2][N2];
+        G[N3][N2] = (B3[i] * B2[i] + C3[i] * C2[i]) * delta + G[N3][N2];
+        G[N1][N3] = (B1[i] * B3[i] + C1[i] * C3[i]) * delta + G[N1][N3];
+        G[N2][N3] = (B2[i] * B3[i] + C2[i] * C3[i]) * delta + G[N2][N3];
+        G[N3][N3] = (B3[i] * B3[i] + C3[i] * C3[i]) * delta + G[N3][N3];
     }
 }
 void PreProcess::set_dirichlet_boundary_condition(vector<vector<double>> &G, vector<double> &R, int NN, int NN2, int NN3, vector<int> IFIX_in, vector<int> IFIX_out, double in_pressure, double out_pressure){
@@ -51,5 +51,28 @@ void PreProcess::set_dirichlet_boundary_condition(vector<vector<double>> &G, vec
         }
         G[IK][IK] = 1.0;
         R[IK] = out_pressure;
+    }
+}
+
+void PreProcess::return_B_vector(vector<double> &B_1, vector<double> &B_2, vector<double> &B_3){
+    for (int i = 0; i < B1.size(); i++){
+        B_1[i] = B1[i];
+        B_2[i] = B2[i];
+        B_3[i] = B3[i];
+    }
+}
+
+void PreProcess::return_C_vector(vector<double> &C_1, vector<double> &C_2, vector<double> &C_3){
+    for (int i = 0; i < C1.size(); i++){
+        C_1[i] = C1[i];
+        C_2[i] = C2[i];
+        C_3[i] = C3[i];
+    }
+}
+
+void PreProcess::return_element_center_of_gravity(vector<double> &E_G_X, vector<double> &E_G_Y){
+    for (int i = 0; i < B1.size(); i++){
+        E_G_X[i] = (X1[i] + X2[i] + X3[i]) / 3.0;
+        E_G_Y[i] = (Y1[i] + Y2[i] + Y3[i]) / 3.0;
     }
 }
