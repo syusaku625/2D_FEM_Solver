@@ -34,6 +34,26 @@ void PreProcess::make_stiffness_matrix(vector<vector<double>> &G, int NE, vector
         G[N3][N3] = (B3[i] * B3[i] + C3[i] * C3[i]) * delta + G[N3][N3];
     }
 }
+void PreProcess::make_M_matrix(vector<vector<double>> &M, int NE, vector<int> NP1, vector<int> NP2, vector<int> NP3){
+    for (int i = 0; i < NE; i++){
+        int N1 = NP1[i];
+        int N2 = NP2[i];
+        int N3 = NP3[i];
+        double delta2 = X1[i] * (Y2[i] - Y3[i]) + X2[i] * (Y3[i] - Y1[i]) + X3[i] * (Y1[i] - Y2[i]);
+        double delta = delta2 * 0.5;
+        delta2 = 1.0 / delta2;
+        M[N1][N1] = 2.0 * 2.0 / (4.0 * 3.0 * 2.0) * delta + M[N1][N1];
+        M[N2][N1] = 2.0 / (4.0 * 3.0 * 2.0) * delta + M[N2][N1];
+        M[N3][N1] = 2.0 / (4.0 * 3.0 * 2.0) * delta + M[N3][N1];
+        M[N1][N2] = 2.0 / (4.0 * 3.0 * 2.0) * delta + M[N1][N2];
+        M[N2][N2] = 2.0 * 2.0 / (4.0 * 3.0 * 2.0) * delta + M[N2][N2];
+        M[N3][N2] = 2.0 / (4.0 * 3.0 * 2.0) * delta + M[N3][N2];
+        M[N1][N3] = 2.0 / (4.0 * 3.0 * 2.0) * delta + M[N1][N3];
+        M[N2][N3] = 2.0 / (4.0 * 3.0 * 2.0) * delta + M[N2][N3];
+        M[N3][N3] = 2.0 * 2.0 / (4.0 * 3.0 * 2.0) * delta + M[N3][N3];
+    }
+}
+
 void PreProcess::set_dirichlet_boundary_condition(vector<vector<double>> &G, vector<double> &R, int NN, int NN2, int NN3, vector<int> IFIX_in, vector<int> IFIX_out, double in_pressure, double out_pressure){
     for (int i = 0; i < NN2; i++)
     {

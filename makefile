@@ -20,6 +20,9 @@ INCLUDE = -I./include
 #LDFLAGS += -L$(BOOST)/lib -lboost_graph 
 #INCLUDE += -I$(BOOST)/include
 
+EIGEN      = $(LIBDIR)/eigen
+INCLUDE += -I$(EIGEN)/include/eigen3
+
 TARGET = $(TARDIR)/run
 
 SOURCES = $(wildcard $(SRCDIR)/*.cpp)

@@ -37,6 +37,7 @@ class PreProcess{
         void return_B_vector(std::vector<double> &B_1, std::vector<double> &B_2, std::vector<double> &B_3);
         void return_C_vector(std::vector<double> &C_1, std::vector<double> &C_2, std::vector<double> &C_3);
         void return_element_center_of_gravity(std::vector<double> &E_G_X, std::vector<double> &E_G_Y);
+        void make_M_matrix(std::vector<std::vector<double>> &M, int NE, std::vector<int> NP1, std::vector<int> NP2, std::vector<int> NP3);
 };
 
 #endif
