@@ -42,14 +42,14 @@ void PreProcess::make_M_matrix(vector<vector<double>> &M, int NE, vector<int> NP
         double delta2 = X1[i] * (Y2[i] - Y3[i]) + X2[i] * (Y3[i] - Y1[i]) + X3[i] * (Y1[i] - Y2[i]);
         double delta = delta2 * 0.5;
         delta2 = 1.0 / delta2;
-        M[N1][N1] = 2.0 * 2.0 / (4.0 * 3.0 * 2.0) * delta + M[N1][N1];
-        M[N2][N1] = 2.0 / (4.0 * 3.0 * 2.0) * delta + M[N2][N1];
-        M[N3][N1] = 2.0 / (4.0 * 3.0 * 2.0) * delta + M[N3][N1];
-        M[N1][N2] = 2.0 / (4.0 * 3.0 * 2.0) * delta + M[N1][N2];
-        M[N2][N2] = 2.0 * 2.0 / (4.0 * 3.0 * 2.0) * delta + M[N2][N2];
-        M[N3][N2] = 2.0 / (4.0 * 3.0 * 2.0) * delta + M[N3][N2];
-        M[N1][N3] = 2.0 / (4.0 * 3.0 * 2.0) * delta + M[N1][N3];
-        M[N2][N3] = 2.0 / (4.0 * 3.0 * 2.0) * delta + M[N2][N3];
+        M[N1][N1] = 2.0 / 12.0 * delta + M[N1][N1];
+        M[N2][N1] = 1.0 / 12.0 * delta + M[N2][N1];
+        M[N3][N1] = 1.0 / 12.0 * delta + M[N3][N1];
+        M[N1][N2] = 1.0 / 12.0 * delta + M[N1][N2];
+        M[N2][N2] = 2.0 / 12.0 * delta + M[N2][N2];
+        M[N3][N2] = 1.0 / 12.0 * delta + M[N3][N2];
+        M[N1][N3] = 1.0 / 12.0 * delta + M[N1][N3];
+        M[N2][N3] = 1.0/12.0 * delta + M[N2][N3];
         M[N3][N3] = 2.0 * 2.0 / (4.0 * 3.0 * 2.0) * delta + M[N3][N3];
     }
 }
