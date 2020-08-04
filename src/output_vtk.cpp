@@ -3,6 +3,17 @@
 using namespace std;
 
 void output::output_pressure_vtk(int NN, int NE, vector<double> X, vector<double> Y, vector<int> NP1, vector<int> NP2, vector<int> NP3, vector<double> p){
+    ofstream output_2("result/pressure.dat");
+    vector<pair<double, double>> pressure_output;
+    for (int i = 0; i < NN; i++){
+        if(fabs(Y[i])<0.001){
+            pressure_output.push_back(make_pair(X[i], p[i]));
+        }
+    }
+    sort(pressure_output.begin(), pressure_output.end());
+    for (int i = 0; i < pressure_output.size(); i++){
+        output_2 << pressure_output[i].second << endl;
+    }
     ofstream output("result/result.vtk");
     output << "# vtk DataFile Version 3.0" << endl;
     output << "pressure" << endl;

@@ -4,17 +4,20 @@
 #include"equation_solver.hpp"
 #include"fem_preprocess.hpp"
 #include"time_problem.hpp"
+#include"validation.hpp"
 using namespace std;
 int main()
 {
     Read_Ply read;
-    string set_boundary_in="x_min";
+    string set_boundary_in="y_min";
     string set_boundary_out = "x_max";
-    double in_pressure = 100.0;
+    string set_boundary_out_1 = "x_min";
+    string set_boundary_out_2 = "y_max";
+    double in_pressure = 1.0;
     double out_pressure = 0.0;
-    double convergence = 0.001;
+    double convergence = 0.0001;
     double delta_t = 0.0000001;
-    read.read_ply("ply_data/fem_mesh_data.ply");
+    read.read_ply("ply_data/test.ply");
     int NN, NE, NN2, NN3;
     vector<int> NP1, NP2, NP3, IFIX_in, IFIX_out;
     vector<double> X, Y;
@@ -24,8 +27,12 @@ int main()
     read.get_node_coordinator(X, Y);
     NN2=read.get_Dirichlet_boundary_node_quantity(set_boundary_in);
     NN3 = read.get_Dirichlet_boundary_node_quantity(set_boundary_out);
+    NN3+= read.get_Dirichlet_boundary_node_quantity(set_boundary_out_1);
+    NN3+= read.get_Dirichlet_boundary_node_quantity(set_boundary_out_2);
     read.get_Dirichlet_boundary_node_number(set_boundary_in, IFIX_in);
     read.get_Dirichlet_boundary_node_number(set_boundary_out, IFIX_out);
+    read.get_Dirichlet_boundary_node_number(set_boundary_out_1, IFIX_out);
+    read.get_Dirichlet_boundary_node_number(set_boundary_out_2, IFIX_out);
     vector<vector<double>> G(NN, vector<double>(NN));
     vector<vector<double>> M(NN, vector<double>(NN));
     vector<double> R(NN);
@@ -52,4 +59,10 @@ int main()
     OUT.output_pressure_vtk(NN, NE, X, Y, NP1, NP2, NP3, p);
     OUT.calculate_velocity(NE, vx, vy, B1, B2, B3, C1, C2, C3, p, NP1, NP2, NP3);
     OUT.output_velocity_vtk(NE, vx, vy, G_X, G_Y);
+    Validation valid;
+
+    vector<double> ans;
+
+    valid.caluculate_l2_nolmu(NN, X, Y, p, ans);
+    valid.pressure_output(NN, NE, X, Y, NP1, NP2, NP3, p, ans);
 }
