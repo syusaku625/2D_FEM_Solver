@@ -19,5 +19,6 @@ plt.plot(x,t_p, label='theory')
 plt.plot(x, a_p, label='analyze')
 plt.xlabel('x [-]')
 plt.ylabel('Φ [-]')
+plt.yticks
 plt.legend()
-plt.savefig('data.PNG')
+plt.savefig('data_1.PNG')

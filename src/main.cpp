@@ -17,7 +17,7 @@ int main()
     double out_pressure = 0.0;
     double convergence = 0.0001;
     double delta_t = 0.0000001;
-    read.read_ply("ply_data/test.ply");
+    read.read_ply("ply_data/fem_test3.ply");
     int NN, NE, NN2, NN3;
     vector<int> NP1, NP2, NP3, IFIX_in, IFIX_out;
     vector<double> X, Y;

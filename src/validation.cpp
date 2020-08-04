@@ -6,8 +6,8 @@ void Validation::caluculate_l2_nolmu(int NN, vector<double> X, vector<double> Y,
     double L2=0.0;
     for (int i = 0; i < p.size(); i++){
         double ans_t = 0.0;
-        for (int j = 1; j < 1000; j+=2){
-            ans_t += (1.0 / (double)j) * exp(-1.0* (double)j * M_PI * (Y[i] + 12.499) / 25.0) * sin((double)j * M_PI * (X[i] + 12.499) / 25.0);
+        for (double j = 1; j <= 5; j+=2){
+            ans_t += (exp(-j * M_PI * (Y[i] + 12.499) / 25.0) * sin(j * M_PI * (X[i] + 12.499) / 25.0))/j;
         }
         ans_t *= (4.0 * 1.0 / M_PI);
         cout << ans_t << endl;
@@ -16,6 +16,7 @@ void Validation::caluculate_l2_nolmu(int NN, vector<double> X, vector<double> Y,
     }
     L2 = sqrt(L2);
     cout << "L2" << " " << L2 << endl;
+    cout << NN << endl;
 }
 void Validation::pressure_output(int NN, int NE, vector<double> X, vector<double> Y, vector<int> NP1, vector<int> NP2, vector<int> NP3, vector<double> p, vector<double> ans){
     ofstream output("result/result_s.vtk");
@@ -23,7 +24,7 @@ void Validation::pressure_output(int NN, int NE, vector<double> X, vector<double
     ofstream output_x("result/x_coordinator.dat");
     vector<pair<double, double>> theory_output;
     for (int i = 0; i < NN; i++){
-        if(fabs(Y[i])<=0.1){
+        if(fabs(Y[i])<=0.001){
             theory_output.push_back(make_pair(X[i], ans[i]));
         }
     }

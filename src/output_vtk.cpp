@@ -6,7 +6,7 @@ void output::output_pressure_vtk(int NN, int NE, vector<double> X, vector<double
     ofstream output_2("result/pressure.dat");
     vector<pair<double, double>> pressure_output;
     for (int i = 0; i < NN; i++){
-        if(fabs(Y[i])<0.001){
+        if(fabs(Y[i])<=0.001){
             pressure_output.push_back(make_pair(X[i], p[i]));
         }
     }
