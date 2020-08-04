@@ -16,6 +16,8 @@ for value in x_data:
     x.append(float(value))
 
 plt.plot(x,t_p, label='theory')
-plt.plot(x,a_p, label='analyze')
+plt.plot(x, a_p, label='analyze')
+plt.xlabel('x [-]')
+plt.ylabel('Φ [-]')
 plt.legend()
 plt.savefig('data.PNG')
